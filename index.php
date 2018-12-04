@@ -1,4 +1,3 @@
 <?php
-    include "Router.php";
-    $router = new Router();
+    require 'autoload.php';
 ?>
