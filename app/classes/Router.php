@@ -1,40 +1,38 @@
 <?php
 
-class Router {
-    function __construct()
-    {
-       $routes = include "routes.php";
-       $uri = $_SERVER['REQUEST_URI'];
+    class Router{
 
-        foreach ($routes as $pattern => $route){
-echo($pattern . ' => ' . $route . '<br>');
-echo($uri);
-            if(preg_match("~^$pattern$~", $uri)){
-                $intRoutes = preg_replace("~$pattern~", $route, $uri, 1);
-                $segments = explode('|', $intRoutes);
-                // $controller = array_shift($segments);
-                // $action = array_shift($segments);
-echo('<br> >>> ');                
-print_r($segments);
-                // $params = [];
-                // foreach ($segments as $segment) {
-                //     $kv = explode('=', $segment);
-                //     if(isset($kv[1])){
-                //         $params[$kv[0]] = $kv[1];
-                //     } else {
-                //         $params[] = $kv[0];
-                //     }
-                // }
+        private $routes;
 
-                // $controller = ucfirst($controller) . 'Controller';
-                // $action = ucfirst($action);
+        public function __construct()
+        {
+            $routesPath = 'app/config/routes.php';
+            $this->routes = include($routesPath);
 
-                // echo 'Controller: '. $controller . '<br>';
-                // echo 'Action: '. $action . '<br>';
-                // echo 'Params: '; var_dump($params);
+            $this->run();
+        }
 
-                return ;
+        public function run()
+        {
+            $uri = $this->getURI();
+//            echo "uri = $uri<br>";
+            // Проверим наличие такого запроса в routes.php
+            foreach ($this->routes as $pattern => $route){
+//echo "pattern = $pattern <br>";
+
+                if (preg_match("~$pattern~", $uri)){
+                    $intRoutes = preg_replace("~$pattern~", $route, $uri, 1);
+//                    print_r($intRoutes);
+                    $segments = explode('|', $intRoutes);
+                    print_r($segments);
+                }
+            }
+        }
+
+        private function getURI()
+        {
+            if (!empty($_SERVER['REQUEST_URI'])){
+                return trim($_SERVER['REQUEST_URI'], '/');
             }
         }
     }
-}

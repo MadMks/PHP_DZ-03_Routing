@@ -1,3 +1,5 @@
 <?php
-    require 'autoload.php';
+    require 'app/components/authoload.php';
+
+    $router = new Router();
 ?>

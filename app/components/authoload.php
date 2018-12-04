@@ -1,5 +1,5 @@
 <?php 
     function __autoload($class){
-        require ''
+        require 'app/classes/' . $class . '.php';
     }
 ?>
