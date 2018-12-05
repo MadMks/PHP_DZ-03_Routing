@@ -21,12 +21,39 @@
 //echo "pattern = $pattern <br>";
 
                 if (preg_match("~$pattern~", $uri)){
-                    $intRoutes = preg_replace("~$pattern~", $route, $uri, 1);
+                    $result = preg_replace("~$pattern~", $route, $uri, 1);
 //                    print_r($intRoutes);
-                    $segments = explode('|', $intRoutes);
-                    print_r($segments);
+                    $segments = explode('|', $result);
+
+                    $controllerName = ucfirst(array_shift($segments)) . 'Controller';
+
+                    $actionName = ucfirst(array_shift($segments)) . 'Action';
+
+                    echo '<br>Контроллер: ' . $controllerName;  // TODO: temp line.
+                    echo '<br>Экшен: ' . $actionName;           // TODO: temp line.
                 }
             }
+
+            if ($result == false){
+                echo 'URI not found';
+                exit;
+            }
+
+            //
+            $params = [];
+            foreach ($segments as $segment){
+                $kv = explode('=', $segment);
+
+                if (isset($kv[1])){
+                    $params[$kv[0]] = $kv[1];
+                }
+                else{
+                    $params[] = $kv[0];
+                }
+            }
+            echo "<br>";        // TODO: temp line.
+            print_r($params);   // TODO: temp line.
+            // Подключение файла класса контроллера.
         }
 
         private function getURI()
