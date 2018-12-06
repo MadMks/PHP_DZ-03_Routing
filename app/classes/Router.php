@@ -16,6 +16,7 @@
         {
             $uri = $this->getURI();
 //            echo "uri = $uri<br>";
+
             // Проверим наличие такого запроса в routes.php
             foreach ($this->routes as $pattern => $route){
 //echo "pattern = $pattern <br>";
@@ -39,7 +40,7 @@
                 exit;
             }
 
-            //
+            // Получим параметры (если есть).
             $params = [];
             foreach ($segments as $segment){
                 $kv = explode('=', $segment);
